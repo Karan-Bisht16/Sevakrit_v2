@@ -1,0 +1,68 @@
+<%- include('./partials/header.ejs') %>
+
+<link rel="stylesheet" type="text/css" href="../../css/style_default.css">
+<link rel="stylesheet" type="text/css" href="../../css/style_profile.css">
+
+    <div class="main">
+        <div class="content">
+            <div class="sec">
+                <p class="username"><%= userData["name"] %></p>
+                <svg viewBox="0 0 24 24" aria-hidden="true" style="width:17.5px" class="r-1bwzh9t r-4qtqp9 r-yyyyoo r-1xvli5t r-1d4mawv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path></g></svg>
+                <span style="font-size: 14px;">Joined <%= userData["user_date_of_joining"] %></span>
+            </div>
+            <div class="sec">
+                <button class="edit">Edit Profile</button>
+            </div>
+        </div>
+        <p class="content" style="padding-bottom: 0; font-size: 28px; font-weight: bolder;">Donation History</p>
+        <div class="content">
+            <table class="table table-success table-striped-columns">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Donar Name</th>
+                        <th>Date of Donation</th>
+                        <th>Type of Donation</th>
+                        <th>Donation Status</th>
+                        <th>NGO</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <%  let i=1; %>
+                    <% userData["user_donations"].forEach(donation=>{ %>
+                        <tr>
+                            <td><%= i %></td>
+                            <td><%= donation["donar_name"] %> &nbsp; </td>
+                            <% 
+                            const a = new Date(donation["date_of_donation"]);
+                            %>
+                            <td><%= `${a.getDate().toString().padStart(2, '0')}-${(a.getMonth() + 1).toString().padStart(2, '0')}-${a.getFullYear()}`%> &nbsp; </td>
+                            <% if(donation["type_of_donation"]==="Food") { %>
+                                <td><%= donation["type_of_donation"] %> &nbsp; 
+                                    <i class="fa-solid fa-caret-down" style="float: right; margin-right: 10px;" role="button" onclick="showDetails()"></i>
+                                    <div class="additional_info" ><%= donation["type_of_event"]%></div>
+                                </td>
+                            <% } else { %>
+                                <td><%= donation["type_of_donation"] %> &nbsp; </td>
+                            <% } %>
+                            <% if (donation["donation_status"].status===0) { %>
+                                <td>Open</td>
+                            <% } else if (donation["donation_status"].status===1) { %>
+                                <td>Accepted</td>
+                            <% } else { %>
+                                <td>Timeout</td>
+                            <% } %>
+                            <td>-</td>
+                        </tr>
+                    <%  i++; }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<%- include('./partials/footer.ejs') %>
+
+    <script src="../../js/script_default.js"></script>
+</body>
+</html>

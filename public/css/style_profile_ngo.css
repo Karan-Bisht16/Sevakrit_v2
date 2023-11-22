@@ -1,0 +1,49 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.content{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 200px 100px 100px;
+}
+.ngoname {
+    font-weight: bolder;
+    font-size: 20px;
+    margin: 0px;
+}
+.edit {
+    height: 34px;
+    outline: none;
+    font-weight: bolder;
+    border-radius: 9999px;
+    border: 0.8px solid #a40b00;
+    padding: 0px 15px;
+} 
+.edit:hover{
+    opacity: 0.8;
+}
+/* .additional_info {
+    background-color: #d1e7dd;
+    border: 1px solid blue;
+    position: absolute;
+    border-radius: 10px;
+    padding: 2px 8px;
+} */
+.originalPositionBtn {
+    outline: none;
+    color: rgb(33, 37, 41);
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    position: relative;
+    top: -90px;
+    left: 10px;
+    padding: 2px 6px;
+    z-index: 800;
+}
+@media (max-width: 990px) {
+    .content{
+        padding: 5px 40px 50px 20px;
+    }
+}

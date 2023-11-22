@@ -1,0 +1,34 @@
+<%- include('./partials/header.ejs') %>
+
+<!-- <link rel="stylesheet" href="../css/style_default.css"> -->
+    <link rel="stylesheet" href="../css/style_sign_in.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_in">
+                <h3>Sign in</h3>
+                <form action="/sign_in" method="post">
+                    <input type="email" name="userEmail" placeholder="Email address" required autofocus />
+                    <div class="password">
+                        <input id="userSignInPassword" name="userPassword" type="password" placeholder="Password" required />
+                        <button id="showSignInPassword" type="button"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                    <a href="#" class="forget">Forget password</a>
+                    <input type="submit" value="Sign in">
+                </form>
+            </div>
+            <div id="error" class="hidden" style="color: red; font-size: 14px;"><%= locals.error %></div>
+            <div style="position: relative;">
+                <hr>
+                <p style="display: flex; justify-content: center;"><a href="/sign_up" class="newUser">Create new account</a></p>
+            </div>
+            <a style="color: white;" href="/sign_in_ngo" class="sign_in_ngo">Sign in as a NGO</a>
+        </section>
+
+    </div>
+
+<%- include('./partials/footer.ejs') %>
+    
+    <script src="./js/script_sign_in.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="../css/style_default.css">
+    <link rel="stylesheet" href="../css/style_sign_in_ngo.css">
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_in">
+                <h3>Sign in as a NGO</h3>
+                <form action="/sign_in_ngo" method="post">
+                    <input type="text" name="NGOEmail" placeholder="Email" required autofocus />
+                    <input type="text" name="NGORegistrationNumber" placeholder="Registration Number" required />
+                    <div class="password">
+                        <input id="NGOSignInPassword" name="NGOPassword" type="password" placeholder="Password" required />
+                        <button id="showSignInPassword" type="button"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                    <a href="#" class="forget">Forget password</a>
+                    <input type="submit" value="Sign in">
+                </form>
+            </div>
+            <div id="error" class="hidden" style="color: red; font-size: 14px;"><%= locals.error %></div>
+            <div style="position: relative;">
+                <hr>
+                <p style="display: flex; justify-content: center;"><a href="/sign_up_ngo" class="newUser">Create new account</a></p>
+            </div>
+            <a style="color: white;" href="/sign_in" class="sign_in">Sign in as an individual</a>
+        </section>
+
+    </div>
+
+<%- include('./partials/footer.ejs') %>
+    
+    <script src="./js/script_sign_in_ngo.js"></script>
+</body>
+</html>

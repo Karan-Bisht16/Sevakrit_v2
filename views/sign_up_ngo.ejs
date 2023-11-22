@@ -1,0 +1,42 @@
+<%- include('./partials/header.ejs') %>
+
+    <link rel="stylesheet" href="./css/style_sign_up_ngo.css"> 
+
+    <div class="main">
+        <section class="Container">
+            <div class="Sign_up_ngo">
+                <h3>Sign up as a NGO</h3>
+                <form action="/sign_up_ngo" method="post">
+                    <input type="text" name="NGOName" placeholder="Name of Organisation" required autofocus />
+                    <input type="text" name="NGOEmail" placeholder="Email" required />
+                    <input type="text" name="NGORegistrationNumber" placeholder="Registration Number" required />
+                    <textarea name="NGOAddress" rows="3" placeholder=" NGO Address" required></textarea>
+                    <input id="NGOCoordinates" name="NGOCoordinates" value="" style="display: none;"></input>
+                    <input type="text" name="NGOWebpage" placeholder="Webpage (optional)" />
+                    <input type="text" name="NGOSectors" placeholder="Sectors (optional)" />
+                    <div class="password">
+                        <input id="NGOSignUpPassword" type="password" name="NGOPassword" placeholder="Password" required />
+                        <button id="showSignUpPassword" type="button"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                    <div class="check">
+                        <input type="checkbox" id="signupCheck" required>
+                        <label for="signupCheck">I accept all terms & condition</label>
+                    </div>
+                    <input type="submit" value="Sign up">
+                </form>
+            </div>
+            <div id="error" class="hidden" style="color: red; font-size: 12px;"><%= locals.error %></div>
+            <div style="position: relative;">
+                <hr>
+                <p style="display: flex; justify-content: center;"><a href="/sign_in_ngo" class="existingUser">Already have an account?</a></p>
+            </div>
+            <a style="color: white;" href="/sign_up" class="sign_up">Sign up as an individual</a>
+        </section>
+    </div>
+    <div id="overlay" class="overlay hidden"></div>
+
+<%- include('./partials/footer.ejs') %>
+    
+    <script src="./js/script_sign_up_ngo.js"></script>
+</body>
+</html>               
