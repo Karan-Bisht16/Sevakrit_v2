@@ -381,8 +381,8 @@ app.get('/profile/ngo/:ngoname', (req,res)=>{
                         destinations: destination
                     },
                     headers: {
-                        'X-RapidAPI-Key': 'cc0236e092msh481490cf9e839a3p169bd2jsn38086794f029',
-                        'X-RapidAPI-Host': 'trueway-matrix.p.rapidapi.com'
+                        'X-RapidAPI-Key': process.env.RapidAPI_Key,
+                        'X-RapidAPI-Host': process.env.RapidAPI_Host
                     }
                 };
                 axios.request(options)
