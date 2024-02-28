@@ -358,15 +358,12 @@ app.get('/profile/ngo/:ngoname', (req,res)=>{
     if (!req.session.userID){
         res.render('sign_up_ngo.ejs', {error:null});
     } else {
-        console.log("1");
         NGO.findOne({email: req.session.userID})
         .then(resultNGO=> {
-            console.log("2");
             let destination = '';
             let i = 0;
             Donation.find({donation_status: {status:0, NGO_name:""}})
             .then(resultDonation=>{
-                console.log("3");
                 const origin = resultNGO.NGO_address.coordinates.latitude+','+resultNGO.NGO_address.coordinates.longitude;
                 resultDonation.forEach(donation=>{
                     if (i === resultDonation.length){
@@ -388,24 +385,19 @@ app.get('/profile/ngo/:ngoname', (req,res)=>{
                         'X-RapidAPI-Host': process.env.RapidAPI_Host
                     }
                 };
-                console.log("4");
                 axios.request(options)
                 .then(responseAPI=>{
-                    console.log("5");
                 	console.log(responseAPI.data);
                     res.render('profile_NGO.ejs', {user: resultNGO.name ,NGOData : resultNGO, type: req.session.type, donationData: resultDonation, response: responseAPI.data});
                 }).catch (error=>{
-                    console.log("6");
                     console.log('Error: '+error);
                     res.sendStatus(500);
                 });
             }).catch (error=>{
-                console.log("7");
                 console.log('Error: '+error);
                 res.sendStatus(500);
             });
         }).catch(error=>{
-            console.log("8");
             console.log("Error: ", error);
             res.sendStatus(500);
         });
@@ -427,9 +419,8 @@ app.post('/profile/ngo/:ngoname', (req,res)=>{
         });
     })
     .catch (error=>{ 
-        console.log("9");
-        console.log("Error: ",error);
         res.sendStatus(500);
+        console.log("Error: ",error);
     });
 });
 
