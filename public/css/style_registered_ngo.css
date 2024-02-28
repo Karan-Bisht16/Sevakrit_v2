@@ -6,3 +6,8 @@
 .NGOWebpage:hover {
     text-decoration: underline;
 }
+@media (max-width: 1200ps) {
+    div.main > div.container {
+        padding: 20px 0px;
+    }
+}
