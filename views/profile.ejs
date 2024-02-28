@@ -15,23 +15,23 @@
             </div>
         </div>
         <p class="content" style="padding-bottom: 0; font-size: 28px; font-weight: bolder;">Donation History</p>
-        <div class="content">
-            <table class="table table-success table-striped-columns">
-                <thead>
+        <div class="container table-responsive">
+            <table class="table table-success table-striped table-hover align-middle">
+                <thead class="align-middle">
                     <tr>
-                        <th>S.No.</th>
-                        <th>Donar Name</th>
-                        <th>Date of Donation</th>
-                        <th>Type of Donation</th>
-                        <th>Donation Status</th>
-                        <th>NGO</th>
+                        <th scope="col">S.No.</th>
+                        <th scope="col">Donar Name</th>
+                        <th scope="col">Date of Donation</th>
+                        <th scope="col">Type of Donation</th>
+                        <th scope="col">Donation Status</th>
+                        <th scope="col">NGO</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     <%  let i=1; %>
                     <% userData["user_donations"].forEach(donation=>{ %>
                         <tr>
-                            <td><%= i %></td>
+                            <td scope="row"><%= i %></td>
                             <td><%= donation["donar_name"] %> &nbsp; </td>
                             <% 
                             const a = new Date(donation["date_of_donation"]);
