@@ -42,6 +42,11 @@
     padding: 2px 6px;
     z-index: 800;
 }
+@media (max-width: 990px) {
+    .content{
+        padding: 5px 40px 50px 20px;
+    }
+}
 .iconMarker {
     border-radius: 50%;
 }
@@ -128,9 +133,4 @@
     width: 15px;
     height: 15px;
     background-color: #3737b7;
-}
-@media (max-width: 990px) {
-    .content{
-        padding: 5px 40px 50px 20px;
-    }
 }
