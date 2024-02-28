@@ -53,6 +53,7 @@ const customIconClothes = L.divIcon({
 
 async function sendPostionToServer(object) {
     const currentURL = window.location.href;
+    console.log(currentURL);
     try {
         const response = await fetch(currentURL, {
             method: 'POST', 
@@ -60,7 +61,7 @@ async function sendPostionToServer(object) {
             body: JSON.stringify(object)
         });
         const locationData = await response.json();
-        // console.log(locationData);
+        console.log(locationData);
         locationData.dataDonation.forEach(donation=>{
             const donationHumanReadableAddress = donation["user_pickup_address"].humanReadableAddress;
             const donationLat = donation["user_pickup_address"].coordinates["latitude"];
