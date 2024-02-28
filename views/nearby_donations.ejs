@@ -3,22 +3,22 @@
     <link rel="stylesheet" href="./css/style_registered_ngo.css">
 
     <div class="main">        
-        <div class="content">
-            <table class="table table-success table-striped-columns">
+        <div class="container table-responsive">
+            <table class="table table-success table-striped table-hover align-middle">
                 <thead>
                     <tr>
-                        <th>S.No.</th>
-                        <th>Donar Name</th>
-                        <th>Date of Donation</th>
-                        <th>Type of Donation</th>
-                        <th>Pickup Address</th>
+                        <th scope="col">S.No.</th>
+                        <th scope="col">Donar Name</th>
+                        <th scope="col">Date of Donation</th>
+                        <th scope="col">Type of Donation</th>
+                        <th scope="col">Pickup Address</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     <%  let i=1; %>
                     <% donationData.forEach(donation=>{ %>
                         <tr>
-                            <td><%= i %></td>
+                            <td scope="row"><%= i %></td>
                             <td><%= donation["donar_name"] %> &nbsp; </td>
                             <% 
                             const a = new Date(donation["date_of_donation"]);
