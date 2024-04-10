@@ -33,7 +33,9 @@ const donation_Schema = new mongoose.Schema({
     donation_status: {
         type: mongoose.Schema.Types.Mixed,
         required: true
-    }
+    },
+    
+
 })
 
 const user_Schema = new mongoose.Schema({
@@ -93,9 +95,10 @@ const NGO_Schema = new mongoose.Schema({
     }
 });
 
+
 const NGO = mongoose.model('NGO', NGO_Schema);
 const User = mongoose.model('User', user_Schema);
 const Donation = mongoose.model('Donation', donation_Schema);
 
 
-module.exports = { connection, NGO, User, Donation };
+module.exports = {connection, NGO, User, Donation };

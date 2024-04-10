@@ -36,20 +36,30 @@ TO DO:
 const axios = require("axios");
 const express = require('express');
 const session = require('express-session');
+const flash = require('connect-flash');
+var methodOverride = require('method-override');
+
 const path = require("path");
+const review=require("./routers/review")
+
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
+
 const saltRounds = 10;
+
 
 const app = express();
 const PORT = 1600;
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use(express.static(__dirname+'/public'));
+app.use(express.static(path.join(__dirname,'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
+
+
 
 const mongoose = require('mongoose');
 const { connection, NGO, User, Donation } = require('./database');
@@ -62,6 +72,8 @@ const mongoStore = MongoStore.create({
     mongooseConnection: mongoose.connection,
 });
 
+
+
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
@@ -69,7 +81,23 @@ app.use(session({
     store: mongoStore,
 }));
 
-app.get('/', (req, res)=>{
+
+
+app.use(express.urlencoded({extended:true})) 
+app.use(methodOverride('_method'))
+
+app.use(flash())
+
+app.use((req,res,next)=>{
+    res.locals.success=req.flash('success')
+    res.locals.error= req.flash('error')
+    next()
+})
+app.use(review) 
+
+
+
+app.get('/', async (req, res)=>{
     req.session.location = req.session.location || '';
     console.log("[GET]  `/`      Current User Location: "+req.session.location);
     if (req.session.userID && req.session.type==='user') {
@@ -170,7 +198,7 @@ app.post('/donate/submit', (req, res)=>{
         res.send({error:null});
     }
 });
-
+       
 app.get('/about_us', (req, res)=>{
     if (req.session.userID && req.session.type==='user') {
         User.findOne({email: req.session.userID})
@@ -193,27 +221,27 @@ app.get('/about_us', (req, res)=>{
     }
 });
 
-app.get('/feedback', (req, res)=>{
-    if (req.session.userID && req.session.type==='user') {
-        User.findOne({email: req.session.userID})
-        .then (result=>{
-            res.render("feedback.ejs", {user: result.name, type: req.session.type});
-        })
-        .catch (error=>{
-            console.log("Error: ",error);
-        });
-    } else if (req.session.userID && req.session.type==='ngo') {
-        NGO.findOne({email: req.session.userID})
-        .then (result=>{
-            res.render("feedback.ejs", {user: result.name, type: req.session.type});
-        })
-        .catch (error=>{
-            console.log("Error: ",error);
-        });
-    } else {
-        res.render("feedback.ejs");
-    }
-});
+// app.get('/feedback', (req, res)=>{
+//     if (req.session.userID && req.session.type==='user') {
+//         User.findOne({email: req.session.userID})
+//         .then (result=>{
+//             res.render("feedback.ejs", {user: result.name, type: req.session.type});
+//         })
+//         .catch (error=>{
+//             console.log("Error: ",error);
+//         });
+//     } else if (req.session.userID && req.session.type==='ngo') {
+//         NGO.findOne({email: req.session.userID})
+//         .then (result=>{
+//             res.render("feedback.ejs", {user: result.name, type: req.session.type});
+//         })
+//         .catch (error=>{
+//             console.log("Error: ",error);
+//         });
+//     } else {
+//         res.render("feedback.ejs");
+//     }
+// });
 
 function dateOfJoining(){
     const date = new Date;
@@ -226,17 +254,17 @@ app.get('/sign_up', (req, res)=>{
 });
 
 app.post('/sign_up',(req, res)=>{
-    //assuming email to be unique and mobile numeber to be valid
     bcrypt.hash(req.body["userPassword"], saltRounds, (err, hashedPassword) => {
         if (err) throw err;
         var newUser = new User({
-            name: req.body["userName"],
+            name: req.body["userName"], 
             email: req.body["userEmail"],
             user_mobile_number: req.body["userMobile"],
             user_password: hashedPassword,
+        
             user_date_of_joining: dateOfJoining()
         });
-        newUser.save()
+       newUser.save()
         .then (result=>{
             req.session.userID = req.body["userEmail"];
             req.session.type = 'user';
@@ -341,6 +369,7 @@ app.post('/sign_in_ngo', (req, res)=>{
 });
 
 app.get('/profile/user/:username', (req,res)=>{
+    // let full=  await User.find({})
     if (!req.session.userID){
         res.render('sign_up.ejs', {error:null});
     } else {
@@ -463,6 +492,46 @@ app.get('/nearby_donations', (req,res)=>{
     })
 });
 
+app.get('/edit_profile/:id', async(req, res)=>{
+    let{id}=req.params;
+    let find= await User.findById(id);
+    if (req.session.userID && req.session.type==='user') {
+        User.findOne({email: req.session.userID})
+
+        .then (result=>{
+            res.render("edit.ejs", {user: result.name, find,type: req.session.type});
+        })
+        .catch (error=>{
+            console.log("Error: ",error);
+        });
+    } else if (req.session.userID && req.session.type==='ngo') {
+        NGO.findOne({email: req.session.userID})
+        .then (result=>{
+            res.render("edit.ejs", {user: result.name, find,type: req.session.type});
+        })
+        .catch (error=>{
+            console.log("Error: ",error);
+        });
+    } else {
+        res.render("edit.ejs")
+    }
+});
+app.patch("/edit_profile/:id", async(req,res)=>{
+try{
+    
+    let {id}=req.params;
+    let {name, user_mobile_number, email}=req.body;
+    
+    await User.findByIdAndUpdate(id,{name,user_mobile_number,email});
+    req.flash('success','Profile edit successfully please go back')
+    res.redirect(`/edit_profile/${id}`);
+}
+catch(err){
+    req.flash('error','Profile not edit successfully')
+}
+})
+
+
 app.get('/logout', (req, res)=>{
     req.session.destroy(err => {
         if (err) {
@@ -476,3 +545,6 @@ app.get('/logout', (req, res)=>{
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
+
