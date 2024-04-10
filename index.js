@@ -36,8 +36,8 @@ TO DO:
 const axios = require("axios");
 const express = require('express');
 const session = require('express-session');
-const flash = require('connect-flash');
-var methodOverride = require('method-override');
+
+
 
 const path = require("path");
 const review=require("./routers/review")
@@ -84,9 +84,9 @@ app.use(session({
 
 
 app.use(express.urlencoded({extended:true})) 
-app.use(methodOverride('_method'))
 
-app.use(flash())
+
+
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash('success')
@@ -492,44 +492,7 @@ app.get('/nearby_donations', (req,res)=>{
     })
 });
 
-app.get('/edit_profile/:id', async(req, res)=>{
-    let{id}=req.params;
-    let find= await User.findById(id);
-    if (req.session.userID && req.session.type==='user') {
-        User.findOne({email: req.session.userID})
 
-        .then (result=>{
-            res.render("edit.ejs", {user: result.name, find,type: req.session.type});
-        })
-        .catch (error=>{
-            console.log("Error: ",error);
-        });
-    } else if (req.session.userID && req.session.type==='ngo') {
-        NGO.findOne({email: req.session.userID})
-        .then (result=>{
-            res.render("edit.ejs", {user: result.name, find,type: req.session.type});
-        })
-        .catch (error=>{
-            console.log("Error: ",error);
-        });
-    } else {
-        res.render("edit.ejs")
-    }
-});
-app.patch("/edit_profile/:id", async(req,res)=>{
-try{
-    
-    let {id}=req.params;
-    let {name, user_mobile_number, email}=req.body;
-    
-    await User.findByIdAndUpdate(id,{name,user_mobile_number,email});
-    req.flash('success','Profile edit successfully please go back')
-    res.redirect(`/edit_profile/${id}`);
-}
-catch(err){
-    req.flash('error','Profile not edit successfully')
-}
-})
 
 
 app.get('/logout', (req, res)=>{
